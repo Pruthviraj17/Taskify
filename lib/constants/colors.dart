@@ -4,6 +4,7 @@ class AppColors {
   static Color appBackground = const Color.fromARGB(255, 255, 255, 255);
   static Color homeBackground = const Color(0xffF7F7F7);
   static Color white = const Color.fromARGB(255, 255, 255, 255);
+  static Color darkGrey = const Color.fromARGB(255, 178, 178, 178);
   static Color purpleShade1 = const Color(0xff686af7);
   static Color purpleShade2 = const Color(0xff888af5);
   static Color red = const Color(0xffe9443a);
@@ -18,5 +19,4 @@ class AppColors {
   static Color green = Colors.green;
   static Color mediumPriority = Colors.amber;
   static Color transparent = Colors.transparent;
-
 }

@@ -14,6 +14,18 @@ class CompletedTaskNotifier extends StateNotifier<List<TaskItem>> {
     sortAllTasks();
   }
 
+   void addAll(List<TaskItem> taskItems) async {
+    state = taskItems.where(
+      (task) {
+        if (task.isDone) {
+          return true;
+        }
+        return false;
+      },
+    ).toList();
+    sortAllTasks();
+  }
+
   void sortAllTasks() {
     state.sort((a, b) => a.dueDate.compareTo(b.dueDate));
   }

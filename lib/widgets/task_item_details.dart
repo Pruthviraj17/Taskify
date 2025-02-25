@@ -4,8 +4,8 @@ import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/models/task_item.dart';
 import 'package:todo_app/components/text_widget.dart';
 
-class ShowItemDetails extends StatelessWidget {
-  const ShowItemDetails({
+class TaskItemDetails extends StatelessWidget {
+  const TaskItemDetails({
     super.key,
     required this.itemIndex,
     required this.todoItem,
@@ -39,10 +39,10 @@ class ShowItemDetails extends StatelessWidget {
             fontColor: AppColors.purpleShade1,
             title: "Title",
             fontSize: 24,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w600,
           ),
           TextWidget(
-            fontColor: AppColors.purpleShade2,
+            fontColor: AppColors.darkGrey,
             title: todoItem.title,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -53,10 +53,10 @@ class ShowItemDetails extends StatelessWidget {
           TextWidget(
               fontColor: AppColors.purpleShade1,
               title: "Descrpiton",
-              fontSize: 22,
-              fontWeight: FontWeight.w900),
+              fontSize: 20,
+              fontWeight: FontWeight.w600),
           TextWidget(
-            fontColor: AppColors.purpleShade2,
+            fontColor: AppColors.darkGrey,
             title: todoItem.description,
             fontSize: 14,
             fontWeight: FontWeight.w500,
@@ -67,10 +67,10 @@ class ShowItemDetails extends StatelessWidget {
           TextWidget(
               fontColor: AppColors.purpleShade1,
               title: "Priority",
-              fontSize: 20,
-              fontWeight: FontWeight.w900),
+              fontSize: 18,
+              fontWeight: FontWeight.w600),
           TextWidget(
-              fontColor: AppColors.purpleShade2,
+              fontColor: AppColors.darkGrey,
               title: todoItem.priority,
               fontSize: 14,
               fontWeight: FontWeight.w500),
@@ -80,10 +80,10 @@ class ShowItemDetails extends StatelessWidget {
           TextWidget(
               fontColor: AppColors.purpleShade1,
               title: "Due Date",
-              fontSize: 18,
-              fontWeight: FontWeight.w900),
+              fontSize: 16,
+              fontWeight: FontWeight.w600),
           TextWidget(
-              fontColor: AppColors.purpleShade2,
+              fontColor: AppColors.darkGrey,
               title: DateFormat('d MMMM').format(todoItem.dueDate),
               fontSize: 14,
               fontWeight: FontWeight.w500),

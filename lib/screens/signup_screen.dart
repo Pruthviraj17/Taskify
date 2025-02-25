@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/constants/colors.dart';
+import 'package:todo_app/models/auth_result.dart';
 import 'package:todo_app/screens/login_screen.dart';
 import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/utils/show_custom_dialog_box.dart';
@@ -31,9 +32,16 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> _signgUp() async {
     if (_formKey.currentState!.validate()) {
-      User user = await AuthService().signUpWithEmailPassword(
+      AuthResult authResult = await AuthService().signUpWithEmailPassword(
           email: _emailController.text, password: _passwordController.text);
-      print(user);
+      if (authResult.user == null) {
+        showCustomDialogBox(
+          context: context,
+          title: "Error",
+          content: authResult.errorMessage,
+          showMessage: true,
+        );
+      }
     }
   }
 

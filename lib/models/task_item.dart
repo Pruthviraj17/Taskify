@@ -51,6 +51,7 @@ import 'package:uuid/uuid.dart';
 
 class TaskItem {
   final String id;
+   String? userId;
   final String title;
   final String description;
   final DateTime dueDate;
@@ -59,6 +60,7 @@ class TaskItem {
 
   TaskItem({
     required this.id,
+     this.userId,
     required this.dueDate,
     required this.priority,
     required this.title,
@@ -71,6 +73,7 @@ class TaskItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'userId': userId,
       'title': title,
       'description': description,
       'dueDate': Timestamp.fromDate(dueDate), // Firestore timestamp
@@ -83,6 +86,7 @@ class TaskItem {
   factory TaskItem.fromJson(Map<String, dynamic> json) {
     return TaskItem(
       id: json['id'],
+      userId: json['userId'],
       title: json['title'],
       description: json['description'],
       dueDate: (json['dueDate'] as Timestamp).toDate(),

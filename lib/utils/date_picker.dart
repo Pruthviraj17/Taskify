@@ -24,8 +24,7 @@ Future<DateTime?> customDatePicker(BuildContext context) async {
                 data: CupertinoThemeData(
                   textTheme: CupertinoTextThemeData(
                     dateTimePickerTextStyle: TextStyle(
-                      color:
-                          AppColors.purpleShade1, // Change text color to purple
+                      color: AppColors.textColor, // Change text color to purple
                       fontSize: 18, // Adjust font size if needed
                       fontWeight: FontWeight.w500, // Make text slightly bold
                     ),

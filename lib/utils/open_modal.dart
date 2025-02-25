@@ -8,13 +8,17 @@ Future<void> openTodoItemModal(
     required BuildContext context,
     required WidgetRef ref}) async {
   await showModalBottomSheet(
+    isScrollControlled: true,
+    useSafeArea: true,
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30))),
     backgroundColor: AppColors.appBackground,
     isDismissible: true,
     context: context,
-    builder: (context) => widget,
+    builder: (context) {
+      return widget;
+    },
   );
   ref.read(pickedDueDateProvider.notifier).state = DateTime.now();
   ref.read(selectedPriorityProvider.notifier).state = "high";

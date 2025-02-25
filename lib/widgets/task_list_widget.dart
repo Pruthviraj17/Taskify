@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/components/text_widget.dart';
 import 'package:todo_app/constants/colors.dart';
+import 'package:todo_app/services/firestore_service.dart';
 import 'package:todo_app/utils/getcolors_priority.dart';
 import 'package:todo_app/models/task_item.dart';
 import 'package:todo_app/providers/completed_tasks_provider.dart';
@@ -69,6 +70,7 @@ class TaskListWidget extends StatelessWidget {
                         cnt: "${todoItem.title} marked as pending.",
                         context: context);
                   }
+                  FirestoreService().updateTaskStatus(todoItem.id, value);
                 },
               ),
               Column(

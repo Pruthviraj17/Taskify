@@ -9,47 +9,58 @@ class PendingTaskNotifier extends StateNotifier<List<TaskItem>> {
   PendingTaskNotifier({
     required this.ref,
   }) : super([
-          TaskItem(
-              isDone: false,
-              id: Uuid().v4(),
-              title: "Morning Run",
-              description: "Go for a 5 km run at 6 AM",
-              dueDate: DateTime.now(),
-              priority: "low"),
-          TaskItem(
-              isDone: false,
-              id: Uuid().v4(),
-              title: "Grocery Shopping",
-              description: "Buy vegetables, fruits, and dairy products",
-              dueDate: DateTime.now().add(Duration(days: 7)),
-              priority: "high"),
-          TaskItem(
-              isDone: false,
-              id: Uuid().v4(),
-              title: "Doctor Appointment",
-              description: "Visit Dr. Sharma for a routine check-up",
-              dueDate: DateTime.now().add(Duration(days: 1)),
-              priority: "low"),
-          TaskItem(
-              isDone: false,
-              id: Uuid().v4(),
-              title: "Project Meeting",
-              description: "Discuss project updates with the team",
-              dueDate: DateTime.now(),
-              priority: "high"),
-          TaskItem(
-              isDone: false,
-              id: Uuid().v4(),
-              title: "Book Reading",
-              description: "Read 50 pages of a self-improvement book",
-              dueDate: DateTime.now().add(Duration(days: 9)),
-              priority: "medium"),
+          // TaskItem(
+          //     isDone: false,
+          //     id: Uuid().v4(),
+          //     title: "Morning Run",
+          //     description: "Go for a 5 km run at 6 AM",
+          //     dueDate: DateTime.now(),
+          //     priority: "low"),
+          // TaskItem(
+          //     isDone: false,
+          //     id: Uuid().v4(),
+          //     title: "Grocery Shopping",
+          //     description: "Buy vegetables, fruits, and dairy products",
+          //     dueDate: DateTime.now().add(Duration(days: 7)),
+          //     priority: "high"),
+          // TaskItem(
+          //     isDone: false,
+          //     id: Uuid().v4(),
+          //     title: "Doctor Appointment",
+          //     description: "Visit Dr. Sharma for a routine check-up",
+          //     dueDate: DateTime.now().add(Duration(days: 1)),
+          //     priority: "low"),
+          // TaskItem(
+          //     isDone: false,
+          //     id: Uuid().v4(),
+          //     title: "Project Meeting",
+          //     description: "Discuss project updates with the team",
+          //     dueDate: DateTime.now(),
+          //     priority: "high"),
+          // TaskItem(
+          //     isDone: false,
+          //     id: Uuid().v4(),
+          //     title: "Book Reading",
+          //     description: "Read 50 pages of a self-improvement book",
+          //     dueDate: DateTime.now().add(Duration(days: 9)),
+          //     priority: "medium"),
         ]);
 
   final Ref ref;
 
+  void addAll(List<TaskItem> taskItems) async {
+    state = taskItems.where(
+      (task) {
+        if (!task.isDone) {
+          return true;
+        }
+        return false;
+      },
+    ).toList();
+    sortAllTasks();
+  }
+
   void addNewItem(TaskItem item) async {
-    await FirestoreService().addTask(item);
     state = [...state, item];
     sortAllTasks();
   }
@@ -74,8 +85,9 @@ class PendingTaskNotifier extends StateNotifier<List<TaskItem>> {
     return removeItem();
   }
 
-  void removeItem() {
+  void removeItem() async {
     // now add to completed list
+
     state = state.where((item) {
       if (item.isDone == true) {
         playDingNotificationSound();
@@ -94,6 +106,8 @@ class PendingTaskNotifier extends StateNotifier<List<TaskItem>> {
       }
       return item;
     }).toList();
+
+    sortAllTasks();
   }
 
   void deleteItem({required String id}) {

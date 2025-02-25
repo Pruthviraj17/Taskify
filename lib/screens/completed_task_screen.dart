@@ -6,10 +6,12 @@ import 'package:todo_app/components/text_widget.dart';
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/models/task_item.dart';
 import 'package:todo_app/services/auth_service.dart';
+import 'package:todo_app/services/firestore_service.dart';
 import 'package:todo_app/utils/open_task_modal.dart';
 import 'package:todo_app/utils/show_custom_dialog_box.dart';
+import 'package:todo_app/utils/split_task.dart';
 import 'package:todo_app/widgets/notasks_icon.dart';
-import 'package:todo_app/widgets/show_item_details.dart';
+import 'package:todo_app/widgets/task_item_details.dart';
 import 'package:todo_app/widgets/task_list_widget.dart';
 
 class CompletedTaskScreen extends StatelessWidget {
@@ -134,7 +136,7 @@ class CompletedTaskScreen extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () => openTodoItemModal(
-                      widget: ShowItemDetails(
+                      widget: TaskItemDetails(
                         itemIndex: index,
                         todoItem: todoItem,
                       ),

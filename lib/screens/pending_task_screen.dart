@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -9,11 +10,13 @@ import 'package:todo_app/models/task_item.dart';
 import 'package:todo_app/providers/pending_task_provider.dart';
 import 'package:todo_app/providers/taskify_provider.dart';
 import 'package:todo_app/services/auth_service.dart';
+import 'package:todo_app/services/firestore_service.dart';
 import 'package:todo_app/utils/open_task_modal.dart';
 import 'package:todo_app/utils/show_custom_dialog_box.dart';
-import 'package:todo_app/widgets/add_item.dart';
+import 'package:todo_app/utils/split_task.dart';
+import 'package:todo_app/widgets/add_task_item.dart';
 import 'package:todo_app/widgets/notasks_icon.dart';
-import 'package:todo_app/widgets/show_item_details.dart';
+import 'package:todo_app/widgets/task_item_details.dart';
 import 'package:todo_app/widgets/show_snackbar.dart';
 import 'package:todo_app/widgets/task_list_widget.dart';
 
@@ -34,6 +37,14 @@ class PendingTaskScreen extends ConsumerStatefulWidget {
 }
 
 class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
+  late User? user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+  }
+
   bool isToday(DateTime dueDate) {
     DateTime now = DateTime.now();
     return dueDate.year == now.year &&
@@ -50,27 +61,23 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
     );
   }
 
-  void _deletedItem(
+  Future<void> _deletedItem(
       {required TaskItem taskItem,
       required int index,
-      required int todoItemsLength}) {
+      required int todoItemsLength}) async {
+    await FirestoreService().deleteTask(taskItem.id);
     ref.read(pendingTaskProvider.notifier).deleteItem(id: taskItem.id);
     showSnackBar(
       cnt: "${taskItem.title}  deleted.",
       context: context,
-      // isDeleted: true,
-      // item: taskItem,
-      // ref: ref,
-      // todoItemsLength: todoItemsLength,
-      // index: index,
     );
   }
 
-  void _editItem(TaskItem taskItem) {
+  Future<void> _editItem(TaskItem taskItem) async {
     ref.read(selectedPriorityProvider.notifier).state = taskItem.priority;
     ref.read(pickedDueDateProvider.notifier).state = taskItem.dueDate;
     openTodoItemModal(
-        widget: AddTodoItem(
+        widget: AddTaskItem(
           ref: ref,
           taskItem: taskItem,
         ),
@@ -104,21 +111,29 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
                   spacing: 20,
                   children: [
                     // widget
-                    Image.asset(
-                      "assets/icons/menu.png",
-                      height: 25,
-                      color: AppColors.white,
-                    ),
+                    user!.photoURL != null
+                        ? CircleAvatar(
+                            backgroundImage: NetworkImage(user!.photoURL!),
+                          )
+                        : Image.asset(
+                            "assets/icons/menu.png",
+                            height: 25,
+                            color: AppColors.white,
+                          ),
                     // serach
                     Flexible(
                       child: CustomTextfield(
                         textEditingController: widget.searchController,
                         fillColor: AppColors.white,
-                        height: 40,
+                        textStyleColor: AppColors.purpleShade1,
+                        hintText: "Search",
                         prefixIcon: Icon(
                           Icons.search,
-                          color: AppColors.greyShade1,
+                          color: AppColors.darkGrey,
                         ),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        borderRadius: 30,
                         validate: (value) {
                           return null;
                         },
@@ -142,14 +157,17 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
                   children: [
                     //texts
                     TextWidget(
-                      title: DateFormat('d MMMM').format(DateTime.now()),
+                      title:
+                          "Today, ${DateFormat('d MMMM').format(DateTime.now())}",
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontColor: AppColors.homeBackground,
                       textAlign: TextAlign.start,
                     ),
                     TextWidget(
-                      title: "My Task",
+                      title: user!.displayName != null
+                          ? "Welcome! ${user!.displayName}"
+                          : "My Tasks",
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
                       fontColor: AppColors.white,
@@ -194,7 +212,7 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
 
                   return GestureDetector(
                     onTap: () => openTodoItemModal(
-                      widget: ShowItemDetails(
+                      widget: TaskItemDetails(
                         itemIndex: index,
                         todoItem: todoItem,
                       ),
@@ -231,13 +249,14 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
                         ],
                       ),
                       child: TaskListWidget(
-                          isPending: true,
-                          todoItem: todoItem,
-                          index: index,
-                          todoItemsLength: widget.todoItemsLength,
-                          ref: widget.ref,
-                          formattedDate:
-                              DateFormat('d MMMM').format(todoItem.dueDate)),
+                        isPending: true,
+                        todoItem: todoItem,
+                        index: index,
+                        todoItemsLength: widget.todoItemsLength,
+                        ref: widget.ref,
+                        formattedDate:
+                            DateFormat('d MMMM').format(todoItem.dueDate),
+                      ),
                     ),
                   );
                 },
