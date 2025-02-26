@@ -1,16 +1,25 @@
 # Taskify
 
-A new Flutter project.
+## A Flutter App for Task Management
 
-## Getting Started
+## Setup Instructions
 
-This project is a starting point for a Flutter application.
+### Step 1:
 
-A few resources to get you started if this is your first Flutter project:
+Create a Firebase project and connect it to your iOS and Android apps.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Step 2:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Place the `google-services.json` file (for Android) and the `GoogleService-Info.plist` file (for iOS) in the respective app directories.
+
+### Step 3:
+
+Configure the iOS and Android project files according to the Firebase rules.
+
+### Step 4:
+
+Execute the following commands in your terminal:
+
+```bash
+flutter clean
+flutter pub get
