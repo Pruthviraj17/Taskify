@@ -7,13 +7,13 @@ import 'package:todo_app/components/custom_textfield.dart';
 import 'package:todo_app/components/text_widget.dart';
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/models/task_item.dart';
+import 'package:todo_app/providers/completed_tasks_provider.dart';
 import 'package:todo_app/providers/pending_task_provider.dart';
 import 'package:todo_app/providers/taskify_provider.dart';
 import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/services/firestore_service.dart';
 import 'package:todo_app/utils/open_task_modal.dart';
 import 'package:todo_app/utils/show_custom_dialog_box.dart';
-import 'package:todo_app/utils/split_task.dart';
 import 'package:todo_app/widgets/add_task_item.dart';
 import 'package:todo_app/widgets/notasks_icon.dart';
 import 'package:todo_app/widgets/task_item_details.dart';
@@ -57,7 +57,12 @@ class _PendingTaskScreenState extends ConsumerState<PendingTaskScreen> {
       context: context,
       title: "Logout ",
       content: "Do you really want to log out?",
-      onPressed: () => AuthService().signOut(),
+      onPressed: () async => {
+        await AuthService().signOut(),
+        ref.read(pendingTaskProvider.notifier).resetData(),
+        ref.read(CompletedTaskProvider.notifier).resetData(),
+        ref.read(currentIndexProvider.notifier).state = 0,
+      },
     );
   }
 

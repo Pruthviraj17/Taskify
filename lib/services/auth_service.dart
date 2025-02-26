@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/models/auth_result.dart';
 
 class AuthService {
-  signInWithGoogle() async {
+  Future<UserCredential> signInWithGoogle() async {
     // begin interactive signin process
     final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
 
@@ -68,6 +68,7 @@ class AuthService {
       return AuthResult(user: result.user);
     } on FirebaseAuthException catch (e) {
       String errorMsg;
+      print(e.code);
       switch (e.code) {
         case 'invalid-credential':
           errorMsg = "Please enter valid email or password.";

@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/models/auth_result.dart';
 import 'package:todo_app/screens/login_screen.dart';
@@ -41,6 +39,8 @@ class _SignupScreenState extends State<SignupScreen> {
           content: authResult.errorMessage,
           showMessage: true,
         );
+      } else {
+        Navigator.of(context).pop();
       }
     }
   }
@@ -129,7 +129,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       AuthProviderWidget(
                         path: "assets/icons/google_icon.png",
                         backgroundColor: AppColors.red,
-                        onTap: () => AuthService().signInWithGoogle(),
+                        onTap: () async {
+                          await AuthService().signInWithGoogle();
+                          Navigator.of(context).pop();
+                        },
                       ),
                       AuthProviderWidget(
                         path: "assets/icons/apple_icon.png",

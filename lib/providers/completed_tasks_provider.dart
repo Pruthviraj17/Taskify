@@ -68,6 +68,10 @@ class CompletedTaskNotifier extends StateNotifier<List<TaskItem>> {
   TaskItem getItem(int index) {
     return state[index];
   }
+
+  void resetData() {
+    state = [];
+  }
 }
 
 final CompletedTaskProvider =

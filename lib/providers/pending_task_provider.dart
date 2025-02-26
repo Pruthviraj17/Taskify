@@ -1,50 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/services/firestore_service.dart';
 import 'package:todo_app/utils/ding_notification.dart';
 import 'package:todo_app/models/task_item.dart';
 import 'package:todo_app/providers/completed_tasks_provider.dart';
-import 'package:uuid/uuid.dart';
 
 class PendingTaskNotifier extends StateNotifier<List<TaskItem>> {
   PendingTaskNotifier({
     required this.ref,
-  }) : super([
-          // TaskItem(
-          //     isDone: false,
-          //     id: Uuid().v4(),
-          //     title: "Morning Run",
-          //     description: "Go for a 5 km run at 6 AM",
-          //     dueDate: DateTime.now(),
-          //     priority: "low"),
-          // TaskItem(
-          //     isDone: false,
-          //     id: Uuid().v4(),
-          //     title: "Grocery Shopping",
-          //     description: "Buy vegetables, fruits, and dairy products",
-          //     dueDate: DateTime.now().add(Duration(days: 7)),
-          //     priority: "high"),
-          // TaskItem(
-          //     isDone: false,
-          //     id: Uuid().v4(),
-          //     title: "Doctor Appointment",
-          //     description: "Visit Dr. Sharma for a routine check-up",
-          //     dueDate: DateTime.now().add(Duration(days: 1)),
-          //     priority: "low"),
-          // TaskItem(
-          //     isDone: false,
-          //     id: Uuid().v4(),
-          //     title: "Project Meeting",
-          //     description: "Discuss project updates with the team",
-          //     dueDate: DateTime.now(),
-          //     priority: "high"),
-          // TaskItem(
-          //     isDone: false,
-          //     id: Uuid().v4(),
-          //     title: "Book Reading",
-          //     description: "Read 50 pages of a self-improvement book",
-          //     dueDate: DateTime.now().add(Duration(days: 9)),
-          //     priority: "medium"),
-        ]);
+  }) : super([]);
 
   final Ref ref;
 
@@ -116,6 +78,10 @@ class PendingTaskNotifier extends StateNotifier<List<TaskItem>> {
 
   TaskItem getItem(int index) {
     return state[index];
+  }
+
+  void resetData() {
+    state = [];
   }
 }
 

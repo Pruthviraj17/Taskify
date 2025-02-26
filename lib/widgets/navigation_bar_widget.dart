@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app/components/text_widget.dart';
-
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/providers/taskify_provider.dart';
 

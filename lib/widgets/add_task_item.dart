@@ -53,6 +53,7 @@ class _AddTodoItemState extends ConsumerState<AddTaskItem> {
   @override
   void dispose() {
     super.dispose();
+
     _titleController.dispose();
     _descController.dispose();
   }
@@ -114,83 +115,60 @@ class _AddTodoItemState extends ConsumerState<AddTaskItem> {
       ),
       child: KeyboardAvoider(
         autoScroll: true,
-        child: Column(
-          children: [
-            Icon(
-              Icons.drag_handle_rounded,
-              size: 30,
-              color: AppColors.purpleShade2,
-            ),
-            const SizedBox(
-              height: 51,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                spacing: 20,
-                children: [
-                  CustomTextfield(
-                    textEditingController: _titleController,
-                    label: "Title",
-                    labelColor: AppColors.darkGrey,
-                    validate: (title) {
-                      if (title!.isEmpty) {
-                        return "Please enter title";
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextfield(
-                    textEditingController: _descController,
-                    label: "Description",
-                    maxLines: 3,
-                    labelColor: AppColors.darkGrey,
-                    validate: (desc) {
-                      if (desc!.isEmpty) {
-                        return "Please enter description";
-                      }
-                      return null;
-                    },
-                  ),
-                  Row(
-                    spacing: 20,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          DateTime? pickedDate =
-                              await customDatePicker(context);
-                          if (pickedDate != null) {
-                            ref.read(pickedDueDateProvider.notifier).state =
-                                pickedDate;
-                          }
-                        },
-                        child: Container(
-                          width: size.width / 2,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: AppColors.greyShade2,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              width: 2,
-                              color: const Color.fromARGB(22, 158, 158, 158),
-                            ),
-                          ),
-                          child: Center(
-                            child: TextWidget(
-                              title: DateFormat('d MMMM')
-                                  .format(ref.watch(pickedDueDateProvider)),
-                              fontSize: 12,
-                              fontColor: AppColors.darkGrey,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        spacing: 20,
-                        children: [
-                          Container(
-                            width: size.width / 4.5,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Icon(
+                Icons.drag_handle_rounded,
+                size: 30,
+                color: AppColors.purpleShade2,
+              ),
+              const SizedBox(
+                height: 51,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  spacing: 20,
+                  children: [
+                    CustomTextfield(
+                      textEditingController: _titleController,
+                      label: "Title",
+                      labelColor: AppColors.darkGrey,
+                      validate: (title) {
+                        if (title!.isEmpty) {
+                          return "Please enter title";
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextfield(
+                      textEditingController: _descController,
+                      label: "Description",
+                      maxLines: 3,
+                      labelColor: AppColors.darkGrey,
+                      validate: (desc) {
+                        if (desc!.isEmpty) {
+                          return "Please enter description";
+                        }
+                        return null;
+                      },
+                    ),
+                    Row(
+                      spacing: 20,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            DateTime? pickedDate =
+                                await customDatePicker(context);
+                            if (pickedDate != null) {
+                              ref.read(pickedDueDateProvider.notifier).state =
+                                  pickedDate;
+                            }
+                          },
+                          child: Container(
+                            width: size.width / 2,
                             height: 50,
                             decoration: BoxDecoration(
                               color: AppColors.greyShade2,
@@ -202,77 +180,105 @@ class _AddTodoItemState extends ConsumerState<AddTaskItem> {
                             ),
                             child: Center(
                               child: TextWidget(
-                                title: ref.watch(selectedPriorityProvider),
+                                title: DateFormat('d MMMM')
+                                    .format(ref.watch(pickedDueDateProvider)),
                                 fontSize: 12,
                                 fontColor: AppColors.darkGrey,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          CoolDropdown<String>(
-                            controller: priorityDropdownController,
-                            dropdownList: pokemonDropdownItems,
-                            defaultItem: pokemonDropdownItems.last,
-                            onChange: (value) {
-                              ref
-                                  .read(selectedPriorityProvider.notifier)
-                                  .state = value;
-                              priorityDropdownController.close();
-                            },
-                            resultOptions: ResultOptions(
-                              width: 45,
-                              render: ResultRender.icon,
-                              icon: SizedBox(
-                                width: 10,
-                                height: 10,
-                                child: CustomPaint(
-                                  painter: DropdownArrowPainter(
-                                    color: AppColors.purpleShade2,
-                                  ),
+                        ),
+                        Row(
+                          spacing: 20,
+                          children: [
+                            Container(
+                              width: size.width / 4.5,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: AppColors.greyShade2,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  width: 2,
+                                  color:
+                                      const Color.fromARGB(22, 158, 158, 158),
+                                ),
+                              ),
+                              child: Center(
+                                child: TextWidget(
+                                  title: ref.watch(selectedPriorityProvider),
+                                  fontSize: 12,
+                                  fontColor: AppColors.darkGrey,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            dropdownOptions: DropdownOptions(
-                              width: 140,
-                            ),
-                            dropdownItemOptions: DropdownItemOptions(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              selectedBoxDecoration: BoxDecoration(
-                                color: Color(0XFFEFFAF0),
+                            CoolDropdown<String>(
+                              controller: priorityDropdownController,
+                              dropdownList: pokemonDropdownItems,
+                              defaultItem: pokemonDropdownItems.last,
+                              onChange: (value) {
+                                ref
+                                    .read(selectedPriorityProvider.notifier)
+                                    .state = value;
+                                priorityDropdownController.close();
+                              },
+                              resultOptions: ResultOptions(
+                                width: 45,
+                                render: ResultRender.icon,
+                                icon: SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: CustomPaint(
+                                    painter: DropdownArrowPainter(
+                                      color: AppColors.purpleShade2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              dropdownOptions: DropdownOptions(
+                                width: 140,
+                              ),
+                              dropdownItemOptions: DropdownItemOptions(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                selectedBoxDecoration: BoxDecoration(
+                                  color: Color(0XFFEFFAF0),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2.5,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () =>
-                    widget.taskItem != null ? _saveEdit() : _addItemToList(),
-                style: ElevatedButton.styleFrom(
-                    elevation: 2,
-                    shadowColor: AppColors.purpleShade2,
-                    backgroundColor: AppColors.purpleShade1),
-                child: TextWidget(
-                    title: widget.taskItem != null ? "Save" : "ADD",
-                    fontColor: AppColors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16),
+              SizedBox(
+                height: 50,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () =>
+                      widget.taskItem != null ? _saveEdit() : _addItemToList(),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 2,
+                      shadowColor: AppColors.purpleShade2,
+                      backgroundColor: AppColors.purpleShade1),
+                  child: TextWidget(
+                      title: widget.taskItem != null ? "Save" : "ADD",
+                      fontColor: AppColors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );
