@@ -68,7 +68,6 @@ class AuthService {
       return AuthResult(user: result.user);
     } on FirebaseAuthException catch (e) {
       String errorMsg;
-      print(e.code);
       switch (e.code) {
         case 'invalid-credential':
           errorMsg = "Please enter valid email or password.";

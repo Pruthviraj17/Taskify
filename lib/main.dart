@@ -47,7 +47,6 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          print("Login Successfully - Navigating to HomeScreen");
           return const HomeScreen();
         }
 
